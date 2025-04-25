@@ -7,21 +7,17 @@ import { Basket } from './types';
 
 
 const App = () => {
-  var [basket, setBasket] = useState<Basket>({
-    items: [],
-    total: 0
-  });
 
-  console.log('App reloaded');
 
 
   return (
     <div>
-      <Navigation basket={basket} />
+
+      <Navigation />
       <div className="p-12">
         <Routes>
-          <Route path="/" element={<ProductPage basket={basket} setBasket={setBasket} />} />
-          <Route path="/checkout" element={<CheckoutPage basket={basket} />} />
+          <Route path="/" element={<ProductPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
         </Routes>
       </div>
     </div>
@@ -29,3 +25,4 @@ const App = () => {
 }
 
 export default App;
+1

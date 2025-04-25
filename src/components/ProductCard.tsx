@@ -1,37 +1,20 @@
+import { useBasketStore } from "../store/store";
 import { Basket, Product } from "../types";
 import { formatPrice } from "../utility-methods";
-import toast from "react-hot-toast";
+
 
 type ProductCardProps = {
-    product: Product;
-    basket: Basket,
-    setBasket: React.Dispatch<React.SetStateAction<Basket>>;
-};
+    product: Product
+}
 
-export const ProductCard = ({ basket, product, setBasket }: ProductCardProps) => {
+export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     console.log(`ProductCard ${product.name} reloaded`);
 
-    const addToBasket = () => {
-        const existingItem = basket.items.find(item => item.product.id === product.id);
-        if (existingItem) {
-            setBasket((prev) => ({
-                items: basket.items.map(item =>
-                    item.product.id === product.id
-                        ? { ...item, quantity: item.quantity + 1 }
-                        : item
-                ),
-                total: prev.total + product.price,
-            }));
-        } else {
-            setBasket(prev => ({
-                items: [...prev.items, { product, quantity: 1 }],
-                total: prev.total + product.price,
-            }));
-        }
+    const addToBasket = useBasketStore(state => state.addToBasket);
 
-        toast.success(`${product.name} added to basket!`);
-        return;
-    };
+    const handleAddToBasket = () => {
+        addToBasket(product);
+    }
 
     return (
         <div className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -46,7 +29,7 @@ export const ProductCard = ({ basket, product, setBasket }: ProductCardProps) =>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             </p>
             <button
-                onClick={addToBasket}
+                onClick={handleAddToBasket}
                 className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-200 cursor-pointer"
             >
                 Add to Basket
